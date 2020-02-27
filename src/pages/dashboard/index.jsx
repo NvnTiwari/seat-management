@@ -13,14 +13,13 @@ class Dashboard extends React.Component {
             isSeatSelected: false,
             previousElementId: 0,
             enableCTA: false,
-            empId: '',
+            empData: {},
             seatData: [],
             error: ''
         }
     }
 
-    onSeatAllocation = (employeeId) => {
-
+    onSeatAllocation = (employeeData) => {
         axios(`http://10.10.33.71:8083/seatalloc/getallseats/2`, {
             method: 'GET',
             headers: {
@@ -30,13 +29,14 @@ class Dashboard extends React.Component {
             console.log('Result', result);
             this.setState({
                 isSeatAllocationUserInfo: false,
-                empId: employeeId,
+                empData: employeeData,
                 seatData: result.data
             }, () => console.log(this.state));
-        }).catch(e => {
-            console.log('error',e);
+        }).catch(e => {            
             this.setState({
-                error: 'Some error occured'
+                error: 'Some error occured',
+                empData: employeeData,
+                isSeatAllocationUserInfo: false
             })
         });
     }
@@ -71,6 +71,7 @@ class Dashboard extends React.Component {
                         onSeatSelection={this.onSeatSelection}
                         isSeatSelected={this.isSeatSelected}
                         seatData={this.state.seatData}
+                        empData={this.state.empData}
                     />}
             </div>
         )

@@ -1,4 +1,4 @@
-const data = [
+const mockData = [
     {
         "roomId": "2",
         "empId": "4",
@@ -193,4 +193,4 @@ const data = [
     }
 ]
 
-export default data;
+export default mockData;

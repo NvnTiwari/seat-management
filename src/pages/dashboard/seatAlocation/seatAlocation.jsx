@@ -1,24 +1,24 @@
 import React from 'react';
+import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from '../../../components/button/button';
 import SeatIcon from '../../../assets/images/chair.svg';
 import SystemIcom from '../../../assets/images/system_icon.svg';
 import WaveIcon from '../../../assets/images/wave_square_icon.svg';
-import data from './mockData';
+import mockData from './mockData';
 
 const SeatAlocationView = (props) => {
-    const { onSeatSelection, seatData } = props;
+    const { onSeatSelection, seatData, empData } = props;
     let [roomLayout, setRoomLayout] = React.useState();
     let [selectedSeat, setSelectedSeat] = React.useState('');
     const [CTAbutton, setCTAbutton] = React.useState(false);
     const [isSeatAlloted, setIsSeatAlloted] = React.useState(false);
     const [successMessage, setSuccessMessage] = React.useState('');
     React.useEffect(() => {
-        //const mockData = data;
-        console.log('seatData',seatData);
-        let data = seatData.length ? seatData : data;
-
+        /*uncomment below line if working with api data*/
+        //let data = seatData.length > 0 ? seatData : mockData; 
+        let data = mockData;        
         var rooms = data.reduce(function (r, a) {
             r[a.roomId] = r[a.roomId] || [];
             r[a.roomId].push(a);
@@ -27,29 +27,30 @@ const SeatAlocationView = (props) => {
         var roomsArray = [];
         for (var i in rooms) {
             roomsArray.push(rooms[i]);
-        }
-        //setSeatAllocationData(roomsArray);
+        }        
         createRoomLayout(roomsArray);
-    }, [])
+    }, [])    
 
-    // const imageComponentFront = <Col xs={1}><img className="seat__rotatechair" src={SeatIcon} onClick={onSeatSelection} /></Col>
-    // const imageComponentBack = <Col xs={1}><img src={SeatIcon} onClick={onSeatSelection} /></Col>
-    /*for (let i = 0; i < 8; i++) {
-        imageComponentFront = <Col xs={1}><img className="seat__rotatechair" id={i + 1} src={SeatIcon} title={title} onClick={() => onSeatSelection(i + 1)} /></Col>
-        imageComponentBack = <Col xs={1} title={title}><img src={SeatIcon} id={i + 9} onClick={() => onSeatSelection(i + 9)} /></Col>
-        seatIconFront.push(imageComponentFront);
-        seatIconBack.push(imageComponentBack);
-    }*/
-
-    const onSelection = (seatData) => {
-        console.log('seatData', seatData);
+    const onSelection = (seatData) => {        
         setSelectedSeat(seatData);
         onSeatSelection(seatData);
         setCTAbutton(seatData.isOcupied ? false : true);
     }
 
     const submitSeatSelection = (seat) => {
-        console.log('onSubmitSeat', seat);
+        axios.post('http://10.10.33.71:8083/seatalloc/allocateseat', {
+            "city": empData.city,
+            "country": "India",
+            "empId": empData.employeeId,
+            "empName": empData.employeeName,
+            "seatId": seat.seatCd
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });      
         setIsSeatAlloted(true);
         let success = <React.Fragment>
             <Row className='seat__successDiv'>
@@ -68,9 +69,7 @@ const SeatAlocationView = (props) => {
             } else {
                 room1stHalf = item.slice(0, item.length);
                 room2ndHalf = null;
-            }
-            console.log(room1stHalf)
-            console.log(room2ndHalf)
+            }            
             return <React.Fragment>
                 <Row id={'Room-' + index} className="seat__Row">
                     {
@@ -150,28 +149,6 @@ const SeatAlocationView = (props) => {
         setRoomLayout(layout);
     }
 
-
-    /*seatIconFront = seatAllocationData.slice(0, seatAllocationData.length / 2).map((item, index) => {
-        return <Col xs={1}>
-            <img className={`seat__rotatechair ${item.name ? 'seat__seatOccupied' : ''}`}
-                id={index + 1}
-                src={SeatIcon}
-                title={item.name == '' ? '' : `Name: ${item.name} Emp id: ${item.empId} Seat No: ${item.seatNo}`}
-                onClick={() => onSeatSelection(item)} />
-        </Col>
-    })
-
-    seatIconBack = seatAllocationData.slice((seatAllocationData.length / 2), seatAllocationData.length).map((item, index) => {
-        return <Col xs={1} title={item.name == '' ? '' : `Name: ${item.name} Emp id: ${item.empId} Seat No: ${item.seatNo}`}>
-            <img src={SeatIcon}
-                className={`${item.name ? 'seat__seatOccupied' : ''}`}
-                id={index + 9}
-                onClick={() => onSeatSelection(item)} />
-        </Col>
-    })*/
-
-
-
     return <Row className="seat">
         <Col>
             <Row>
@@ -181,25 +158,6 @@ const SeatAlocationView = (props) => {
             </Row>
             <div className="seat__seatrow">
                 {!isSeatAlloted ? roomLayout : successMessage}
-                {/*<Row>
-                    <Col xs={2}><img src={SystemIcom} className="seat__system" /></Col>
-                    {seatIconFront}
-                    <Col xs={2} />
-
-                    <Col xs={2} />
-                    <Col xs={8}><hr className="seat__hr" /></Col>
-                    <Col xs={2} />
-
-                    <Col xs={2} />
-                    {seatIconBack}
-                </Row>
-
-                <Row className="seat__textrow">
-                    <Col xs={1}><img src={WaveIcon} /></Col>
-                    <Col sx={10} className="seat__title seat__title--text">Unimoni Project</Col>
-                    <Col xs={1}><img src={WaveIcon} /></Col>
-                </Row>*/}
-
             </div>
 
             <Row align="right" className="seat__btnrow--btnallocation">
