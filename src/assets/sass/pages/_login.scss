@@ -1,0 +1,48 @@
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.login{
+    position: absolute;
+    top: 30%;
+    right: 40%;
+    width: 20%;
+
+    &__img{
+        @include commonImageProperty('../../images/login.png', 100%); 
+    }
+    
+    &__logo{
+        @include commonImageProperty('../../images/login_logo.svg', 30px);
+    }
+
+    &__footerlogo{
+        @include commonImageProperty('../../images/footer_login_logo.png', 30px);
+        margin-top: 55%;
+    }
+
+    &__footertext{
+        @include commonTextProperty(12px, $color-purple-light, 0);
+    }
+
+    &__heading {
+        @include commonTextProperty(16px,$color-white, 0.8px);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    &__input{
+        @include commonProperty($color-white)
+    }
+
+    &__btn{
+        @include commonProperty($color-purple-light);
+        border-color: $color-purple-light !important;
+    }
+
+    &__validation{
+        color: $color-red;
+    }
+}
+

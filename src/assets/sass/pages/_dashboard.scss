@@ -1,0 +1,17 @@
+.dashboard{
+    text-align: left;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 0.7px;
+    color: $color-grey-light;
+    opacity: 1;
+    margin-bottom: 9%;
+    
+    position: relative;
+    top: 75px;
+
+    &__charttitle{
+        color: $color-persian-green;
+        font-size: 15px;
+    }
+}

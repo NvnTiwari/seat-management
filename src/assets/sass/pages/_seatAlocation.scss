@@ -1,0 +1,131 @@
+.seat{
+    margin-top: 2%;
+    margin-bottom: 5%;
+    background-color: $color-lighttheme;
+    padding-top: 1%;
+    padding-left: 1%;
+
+    &__title{
+        color: $color-grey-light;
+        font-size: 18px;
+        padding-bottom: 3%;
+
+        &--text{
+            font-size: 12px;
+            text-align: center;
+        }
+    }
+
+    &__labeltext{
+        color: $color-grey-light;
+        font-size: 15px;
+    }
+
+    &__input{
+        background-color: $color-theme !important;
+        border-color: $color-theme !important;
+        opacity: 1;
+    }
+
+    &__btnrow{
+        margin-bottom: 5%;
+
+        &--btnallocation{
+            margin-bottom: 1%;
+            margin-top: 1%;
+        }
+    }
+
+    &__btn{
+        background-color: $color-cold-purple !important;
+        border-color: $color-cold-purple !important;
+        border-radius: 4px !important;
+        opacity: 1;
+    }
+
+    &__seatrow{
+        background-color: $color-theme;
+        padding: 20px 0 20px 20px;
+    }
+
+    &__textrow{
+        padding: 20px 0 0 0;
+    }
+
+    &__system{
+        width: 15%;
+        position: absolute;
+        top: 125%;
+        left: 50%;
+    }
+
+    &__Project{
+        padding-left: 48%;
+        color: white;
+        margin-bottom:20px;
+    }
+
+    &__hr{
+        &2{
+            width: 10%;
+            background-color: $color-purple-light;
+            margin-left: 25%;
+        }
+        &4{
+            width: 24%;
+            background-color: $color-purple-light;
+            margin-left: 25%;
+        }
+        &5, &6{
+            width: 42%;
+            background-color: $color-purple-light;
+            margin-left: 25%;
+        }
+        &7,&8{
+            width: 60%;
+            background-color: $color-purple-light;
+            margin-left: 25%;
+        }
+        &9, &10{
+            width: 80%;
+            background-color: $color-purple-light;
+            margin-left: 25%;
+        }
+        &11, &12{
+            width: 55%;
+            background-color: $color-purple-light;
+            margin-left: 25%;
+        }
+    }
+
+    &__success{
+        color: white;
+        justify-content: center;
+        &Div{
+            display: block;
+            padding: 45px 45px;
+        }
+    }
+
+    &__rotatechair{
+        transform: rotate(180deg);
+    }
+
+    &__seatselection{
+        filter: invert(43%) sepia(96%) saturate(1237%) hue-rotate(88deg) brightness(128%) contrast(119%);
+    }
+
+    &__seatOccupied{
+        filter: invert(250%) sepia(66%) saturate(1203%) hue-rotate(88deg) brightness(152%) contrast(160%);
+    }
+
+    &__seatDiv{
+        max-width: 95%;
+        flex: 0 0 100%;
+        margin-left: -7%;
+    }
+
+    &__Row{
+        padding-left: 10%;
+    }
+}
