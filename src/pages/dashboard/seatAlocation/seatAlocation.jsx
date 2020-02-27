@@ -51,8 +51,7 @@ const SeatAlocationView = (props) => {
         setIsSeatAlloted(true);
         let success = <React.Fragment>
             <Row className='seat__successDiv'>
-                <Row className='seat__success'>Seat allocated to {seat.empName}.</Row>
-                <Row className='seat__success'>He will recieve update on his email shortly.</Row>
+                <Row className='seat__success'>Seat allocated to {seat.empName} {seat.empId}.</Row>
             </Row>
         </React.Fragment>;
         setSuccessMessage(success);
