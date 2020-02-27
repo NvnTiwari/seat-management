@@ -8,16 +8,18 @@ import WaveIcon from '../../../assets/images/wave_square_icon.svg';
 import data from './mockData';
 
 const SeatAlocationView = (props) => {
-    const { onSeatSelection } = props;
+    const { onSeatSelection, seatData } = props;
     let [roomLayout, setRoomLayout] = React.useState();
     let [selectedSeat, setSelectedSeat] = React.useState('');
     const [CTAbutton, setCTAbutton] = React.useState(false);
     const [isSeatAlloted, setIsSeatAlloted] = React.useState(false);
     const [successMessage, setSuccessMessage] = React.useState('');
     React.useEffect(() => {
-        const mockData = data;
+        //const mockData = data;
+        console.log('seatData',seatData);
+        let data = seatData.length ? seatData : data;
 
-        var rooms = mockData.reduce(function (r, a) {
+        var rooms = data.reduce(function (r, a) {
             r[a.roomId] = r[a.roomId] || [];
             r[a.roomId].push(a);
             return r;
