@@ -43,7 +43,7 @@ const SeatAlocationView = (props) => {
             "country": "India",
             "empId": empData.employeeId,
             "empName": empData.employeeName,
-            "seatId": seat.seatCd
+            "seatId": parseInt(seat.seatId)
           })
           .then(function (response) {
             console.log(response);
@@ -71,7 +71,7 @@ const SeatAlocationView = (props) => {
                 room2ndHalf = null;
             }            
             return <React.Fragment>
-                <Row id={'Room-' + index} className="seat__Row">
+                <Row id={'Room-' + index} className={ item.length > 8 ? "seat__Row" : "seat__Row_small" }>
                     {
                         <React.Fragment>
                             <Col xs={2}><img src={SystemIcom} className="seat__system" /></Col>

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,6 +16,7 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
+import { useEffect } from 'react';
 
 const useStyles1 = makeStyles(theme => ({
     root: {
@@ -100,20 +102,23 @@ const useStyles2 = makeStyles({
 export default function CustomPaginationActionsTable() {
     const classes = useStyles2();
     const [page, setPage] = React.useState(0);
+    const [employeeData, setEmployeeData] = React.useState([]);  
+    const [employees, setEmployees] = React.useState([])
+    useEffect(() => {
+        axios(`http://10.10.33.71:8081/api/employees/all`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(result => {
+            console.log('Result', result);
+            setEmployeeData(result.data);
+            setEmployees(result.data);
+        }).catch(e => {
+            setEmployeeData([]);           
+        });
+    }, [])
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const data = [
-        { id: 1, name: 'Vaibhav', email: 'vaibhav@xebia.com' },
-        { id: 2, name: 'Shantanu', email: 'shantanu@xebia.com' },
-        { id: 3, name: 'Pooja', email: 'pooja@xebia.com' },
-        { id: 4, name: 'Aarti', email: 'aarti@xebia.com' },
-        { id: 5, name: 'Vaibhav', email: 'vaibhav@xebia.com' },
-        { id: 6, name: 'Shantanu', email: 'shantanu@xebia.com' },
-        { id: 7, name: 'Pooja', email: 'pooja@xebia.com' },
-        { id: 8, name: 'Aarti', email: 'aarti@xebia.com' },
-        { id: 9, name: 'Vaibhav', email: 'vaibhav@xebia.com' },
-        { id: 10, name: 'Shantanu', email: 'shantanu@xebia.com' }
-    ];
-    const [employees, setEmployees] = React.useState(data)
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, employees.length - page * rowsPerPage);
 
@@ -143,7 +148,7 @@ export default function CustomPaginationActionsTable() {
             })
             setEmployees(filteredEmployees);
         } else {
-            setEmployees(data);
+            setEmployees(employeeData);
         }
 
     }
@@ -156,10 +161,10 @@ export default function CustomPaginationActionsTable() {
                 <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="custom pagination table">
                         <TableHead>
-                            <TableRow>
-                                <StyledTableCell align="center">ID</StyledTableCell>
+                            <TableRow>                                
                                 <StyledTableCell align="center">Name</StyledTableCell>
                                 <StyledTableCell align="center">Email</StyledTableCell>
+                                <StyledTableCell align="center">City</StyledTableCell>
                                 <StyledTableCell align="center">Add Seat</StyledTableCell>
                             </TableRow>
                         </TableHead>
@@ -168,13 +173,11 @@ export default function CustomPaginationActionsTable() {
                                 ? employees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 : employees
                             ).map((row, index) => (
-                                
-                                <TableRow key={row.id} style ={ index % 2? { background : "#D3D3D3"}:{ background : "white" }}>
-                                    <TableCell component="th" scope="row" align="center">
-                                        {row.id}
-                                    </TableCell>
+
+                                <TableRow key={row.id} style={index % 2 ? { background: "#D3D3D3" } : { background: "white" }}>                                    
                                     <TableCell align="center">{row.name}</TableCell>
                                     <TableCell align="center">{row.email}</TableCell>
+                                    <TableCell align="center">{row.clientLocation}</TableCell>
                                     <TableCell align="center"><button className='button' onClick={() => addSeat(row.name)}>Click Me</button></TableCell>
                                 </TableRow>
                             ))}
