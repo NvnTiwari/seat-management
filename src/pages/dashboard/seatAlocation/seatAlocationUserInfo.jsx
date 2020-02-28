@@ -45,7 +45,7 @@ const SeatAlocationUserInfoView = (props) => {
                         projectName: '',
                         projectRoom: ''
                     });
-                    setCTAbutton(true);
+                    setCTAbutton(false);
                     setError(`Data not found`);
                 });
             } else {

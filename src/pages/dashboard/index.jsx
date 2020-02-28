@@ -20,7 +20,7 @@ class Dashboard extends React.Component {
     }
 
     onSeatAllocation = (employeeData) => {
-        axios(`http://10.10.33.71:8083/seatalloc/getallseats/2`, {
+        axios(`http://10.10.33.71:8083/seatalloc/getallseats/1`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

@@ -17,8 +17,8 @@ const SeatAlocationView = (props) => {
     const [successMessage, setSuccessMessage] = React.useState('');
     React.useEffect(() => {
         /*uncomment below line if working with api data*/
-        //let data = seatData.length > 0 ? seatData : mockData; 
-        let data = mockData;        
+        let data = seatData.length > 0 ? seatData : mockData; 
+        //let data = mockData;        
         var rooms = data.reduce(function (r, a) {
             r[a.roomId] = r[a.roomId] || [];
             r[a.roomId].push(a);
@@ -34,7 +34,7 @@ const SeatAlocationView = (props) => {
     const onSelection = (seatData) => {        
         setSelectedSeat(seatData);
         onSeatSelection(seatData);
-        setCTAbutton(seatData.isOcupied ? false : true);
+        setCTAbutton(seatData.isOccupied ? false : true);
     }
 
     const submitSeatSelection = (seat) => {
@@ -54,7 +54,7 @@ const SeatAlocationView = (props) => {
         setIsSeatAlloted(true);
         let success = <React.Fragment>
             <Row className='seat__successDiv'>
-                <Row className='seat__success'>Seat allocated to {seat.empName} {seat.empId}.</Row>
+                <Row className='seat__success'>Seat allocated to {empData.employeeName} {empData.employeeId}.</Row>
             </Row>
         </React.Fragment>;
         setSuccessMessage(success);
