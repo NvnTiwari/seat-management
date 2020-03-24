@@ -3,6 +3,8 @@ import axios from 'axios';
 import DashboardView from './dashboard';
 import SeatAllocationUserInfo from './seatAlocation/seatAlocationUserInfo';
 import SeatAllocation from './seatAlocation/seatAlocation';
+// uncomment mockdata when working with API's
+// import mockData from './seatAlocation/mockData';
 
 
 class Dashboard extends React.Component {
@@ -15,18 +17,33 @@ class Dashboard extends React.Component {
             enableCTA: false,
             empData: {},
             seatData: [],
-            error: ''
+            error: '',
+            isSeatDeallocated: false
         }
     }
 
+    onSeatDeAllocation = (employeeData, seatId) => {
+        axios.post('http://localhost:8083/seatalloc/deallocateseat', {
+            "city": employeeData.city,
+            "country": employeeData.country,
+            "empId": employeeData.employeeId,
+            "empName": employeeData.ownerName,
+            "seatID": seatId
+        }).then(res => {
+            this.setState({
+                isSeatAllocationUserInfo: false,
+                isSeatDeallocated: true
+            })
+        })
+    };
+
     onSeatAllocation = (employeeData) => {
-        axios(`http://10.10.33.71:8083/seatalloc/getallseats/1`, {
+        axios(`http://localhost:8083/seatalloc/getallseats/6`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         }).then(result => {
-            console.log('Result', result);
             this.setState({
                 isSeatAllocationUserInfo: false,
                 empData: employeeData,
@@ -59,17 +76,18 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        const { isSeatAllocationUserInfo } = this.state;
+        const { isSeatAllocationUserInfo, isSeatDeallocated } = this.state;
         return (
             <div style={{ overflowX: 'hidden' }}>
-                {/*<DashboardView />*/}
-                <div className="dashboard">Dashboard</div>
+                <DashboardView />
                 {(isSeatAllocationUserInfo) ? <SeatAllocationUserInfo
                     isSeatAllocationUserInfo={isSeatAllocationUserInfo}
                     onSeatAllocation={this.onSeatAllocation}
+                    onSeatDeAllocation={this.onSeatDeAllocation}
                 /> : <SeatAllocation
                         onSeatSelection={this.onSeatSelection}
                         isSeatSelected={this.isSeatSelected}
+                        isSeatDeallocated={isSeatDeallocated}
                         seatData={this.state.seatData}
                         empData={this.state.empData}
                     />}

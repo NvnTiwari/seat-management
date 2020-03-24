@@ -5,11 +5,12 @@ import logo from '../../assets/images/header_logo.png';
 import avatar from '../../assets/images/avatar.png';
 
 const headerView = (props) =>{
+    const emailToName = localStorage.getItem('email');
     const header = <div className="header">
                         <img src={logo} alt="Logo" className="header__logo" />
                         <div className="header__right">
-                            <img src={avatar} alt="Logo" roundedCircle className="header__roundlogo" />
-                                <DropdownButton id="dropdown-basic-button" variant="secondary" className="header__dropdown" title="Vinod Kumar">
+                            <img src={avatar} alt="Logo" className="header__roundlogo" />
+                                <DropdownButton id="dropdown-basic-button" variant="secondary" className="header__dropdown" title={emailToName.substring(0, emailToName.indexOf("."))}>
                                     <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
                                     <Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
                                     <Dropdown.Item onClick={props.logOut}>Logout</Dropdown.Item>

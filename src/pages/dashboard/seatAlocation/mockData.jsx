@@ -2,8 +2,8 @@ const mockData = [
     {
         "roomId": "2",
         "empId": "4",
-        "seatId": "5",
-        "empName": "imp",
+        "seatId": "1",
+        "empName": "Navin",
         "seatCd": "XIGNCA0501014",
         "isOccupied": true
     },
@@ -11,14 +11,14 @@ const mockData = [
         "roomId": "2",
         "empId": "6",
         "seatId": "6",
-        "empName": "imp",
+        "empName": "Pooja",
         "seatCd": "XIGNCA0501015",
         "isOccupied": true
     },
     {
         "roomId": "2",
-        "empId": null,
-        "seatId": null,
+        "empId": 1,
+        "seatId": 1099,
         "empName": "Aarti",
         "seatCd": "XIGNCA0501016",
         "isOccupied": false
@@ -43,7 +43,7 @@ const mockData = [
         "roomId": "2",
         "empId": "6",
         "seatId": "6",
-        "empName": "imp",
+        "empName": "test2",
         "seatCd": "dfgdfg",
         "isOccupied": true
     },
@@ -52,14 +52,14 @@ const mockData = [
         "empId": null,
         "seatId": null,
         "empName": "Pooja",
-        "seatCd": "dfgdfgdfgdfg",
+        "seatCd": "1",
         "isOccupied": false
     },
     {
         "roomId": "2",
         "empId": null,
         "seatId": null,
-        "empName": null,
+        "empName": "Amit",
         "seatCd": "XIGNCA050werwer1024",
         "isOccupied": true
     },
@@ -119,78 +119,86 @@ const mockData = [
         "empId": 'XI1633',
         "empName": 'Vinod1'
     },
+    // {
+    //     "isOccupied": false,
+    //     "roomId": "2",
+    //     "seatCd": "Seat14",
+    //     "seatId": 5,
+    //     "empId": 'XI1634',
+    //     "empName": 'Vinod2'
+    // },
     {
-        "isOccupied": true,
         "roomId": "2",
-        "seatCd": "Seat14",
-        "seatId": 5,
-        "empId": 'XI1634',
-        "empName": 'Vinod2'
+        "empId": "XI1653",
+        "seatId": null,
+        "empName": "Navin",
+        "seatCd": "dfg",
+        "isOccupied": false
     },
-    {
-        "isOccupied": true,
-        "roomId": "2",
-        "seatCd": "Seat13",
-        "seatId": 4,
-        "empId": 'XI1633',
-        "empName": 'Vinod1'
-    },
-    {
-        "isOccupied": true,
-        "roomId": "2",
-        "seatCd": "Seat14",
-        "seatId": 5,
-        "empId": 'XI1634',
-        "empName": 'Vinod2'
-    },
-    {
-        "isOccupied": true,
-        "roomId": "2",
-        "seatCd": "Seat13",
-        "seatId": 4,
-        "empId": 'XI1633',
-        "empName": 'Vinod1'
-    },
-    {
-        "isOccupied": true,
-        "roomId": "2",
-        "seatCd": "Seat14",
-        "seatId": 5,
-        "empId": 'XI1634',
-        "empName": 'Vinod2'
-    },
-    {
-        "isOccupied": true,
-        "roomId": "2",
-        "seatCd": "Seat13",
-        "seatId": 4,
-        "empId": 'XI1633',
-        "empName": 'Vinod1'
-    },
-    {
-        "isOccupied": true,
-        "roomId": "2",
-        "seatCd": "Seat14",
-        "seatId": 5,
-        "empId": 'XI1634',
-        "empName": 'Vinod2'
-    },
-    {
-        "isOccupied": true,
-        "roomId": "2",
-        "seatCd": "Seat13",
-        "seatId": 4,
-        "empId": 'XI1633',
-        "empName": 'Vinod1'
-    },
-    {
-        "isOccupied": true,
-        "roomId": "2",
-        "seatCd": "Seat14",
-        "seatId": 5,
-        "empId": 'XI1634',
-        "empName": 'Vinod2'
-    }
+    // {
+    //     "isOccupied": true,
+    //     "roomId": "2",
+    //     "seatCd": "Seat13",
+    //     "seatId": 4,
+    //     "empId": 'XI1633',
+    //     "empName": 'Vinod1'
+    // },
+    // {
+    //     "isOccupied": true,
+    //     "roomId": "2",
+    //     "seatCd": "Seat14",
+    //     "seatId": 5,
+    //     "empId": 'XI1634',
+    //     "empName": 'Vinod2'
+    // },
+    // {
+    //     "isOccupied": true,
+    //     "roomId": "2",
+    //     "seatCd": "Seat13",
+    //     "seatId": 4,
+    //     "empId": 'XI1633',
+    //     "empName": 'Vinod1'
+    // },
+    // {
+    //     "isOccupied": true,
+    //     "roomId": "2",
+    //     "seatCd": "Seat14",
+    //     "seatId": 5,
+    //     "empId": 'XI1634',
+    //     "empName": 'Vinod2'
+    // },
+    // {
+    //     "isOccupied": true,
+    //     "roomId": "2",
+    //     "seatCd": "Seat13",
+    //     "seatId": 4,
+    //     "empId": 'XI1633',
+    //     "empName": 'Vinod1'
+    // },
+    // {
+    //     "isOccupied": true,
+    //     "roomId": "2",
+    //     "seatCd": "Seat14",
+    //     "seatId": 5,
+    //     "empId": 'XI1634',
+    //     "empName": 'Vinod2'
+    // },
+    // {
+    //     "isOccupied": true,
+    //     "roomId": "2",
+    //     "seatCd": "Seat13",
+    //     "seatId": 4,
+    //     "empId": 'XI1633',
+    //     "empName": 'Vinod1'
+    // },
+    // {
+    //     "isOccupied": true,
+    //     "roomId": "2",
+    //     "seatCd": "Seat14",
+    //     "seatId": 5,
+    //     "empId": 'XI1634',
+    //     "empName": 'Vinod2'
+    // }
 ]
 
 export default mockData;

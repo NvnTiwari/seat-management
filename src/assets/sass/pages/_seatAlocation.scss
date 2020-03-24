@@ -5,6 +5,12 @@
     padding-top: 1%;
     padding-left: 1%;
 
+    .col-1, .col-2 {
+        > img {
+            height: 15px;
+        }
+    }
+
     &__title{
         color: $color-grey-light;
         font-size: 18px;
@@ -43,12 +49,25 @@
         opacity: 1;
     }
 
+    &__deAllocate {
+        background-color: $color-lighttheme !important;
+        border-color: #e53935 !important;
+        color: #e53935 !important;
+        margin-right: 11px;
+    }
+
+    &__reAllocate {
+        background-color: $color-lighttheme !important;
+        border-color: white !important;
+        color: white !important;
+    }
+
     &__seatrow{
         background-color: $color-theme;
         padding: 20px 0 20px 20px;
     }
 
-    &__textrow{
+    &__textrow {
         padding: 20px 0 0 0;
     }
 
@@ -86,6 +105,11 @@
             background-color: $color-purple-light;
             margin-left: 25%;
         }
+        &7, &8, &12{
+            height: 2px;
+            border-radius: 7px 7px 7px 7px;
+            border: 1px solid $color-purple-light; 
+        }
         &9, &10{
             width: 80%;
             background-color: $color-purple-light;
@@ -94,7 +118,7 @@
         &11, &12{
             width: 55%;
             background-color: $color-purple-light;
-            margin-left: 25%;
+            margin-left: 25%; 
         }
     }
 
@@ -112,11 +136,16 @@
     }
 
     &__seatselection{
-        filter: invert(43%) sepia(96%) saturate(1237%) hue-rotate(88deg) brightness(128%) contrast(119%);
+        filter: invert(43%) sepia(96%) saturate(1237%) hue-rotate(88deg) brightness(128%) contrast(119%) !important;
+    }
+
+    .seats {
+        filter: invert(250%) sepia(66%) saturate(1203%) hue-rotate(88deg) brightness(152%) contrast(160%);
     }
 
     &__seatOccupied{
-        filter: invert(250%) sepia(66%) saturate(1203%) hue-rotate(88deg) brightness(152%) contrast(160%);
+        filter: invert(50%) sepia(157%) saturate(113) hue-rotate(52deg) brightness(128%) contrast(145%) !important
+        // filter: invert(250%) sepia(66%) saturate(1203%) hue-rotate(88deg) brightness(152%) contrast(160%);
     }
 
     &__seatDiv{

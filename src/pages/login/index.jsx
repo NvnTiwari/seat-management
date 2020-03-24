@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LoginView from './LoginComponent';
 import { onValidation } from '../../common/utils/utils';
+import axios from 'axios';
 
 class Login extends React.Component{
     constructor(props){
@@ -12,6 +13,8 @@ class Login extends React.Component{
             isEmailValid: true,
             isPasswordValid: true,
             isLoginSuccess: true,
+            isUserAuthenticated: true,
+            isLoading: false
         }
     }
 
@@ -25,29 +28,48 @@ class Login extends React.Component{
     }
 
     onHandleLogin = () => {
-        const { email, password  } = this.state;
+        const { email, password } = this.state;
         const isValidEmail = onValidation(email, 'email');
         const isValidPsw = onValidation(password, 'password');
 
         this.setState({
             isEmailValid: isValidEmail,
             isPasswordValid: isValidPsw,
+            isLoading: true
         });
         if(isValidEmail && isValidPsw){
-            document.body.classList.remove('login__img');
-            window.localStorage.setItem('_TOKEN', true);
-            this.props.goToPage("/dashboard")
+            axios.post("http://localhost:8084/app/login", {
+                email,
+                password
+            })
+            .then(response => {
+                this.setState({isLoading: false});
+                document.body.classList.remove('login__img');
+                window.localStorage.setItem('_TOKEN', response.data.token);
+                window.localStorage.setItem('email', email);
+                this.props.goToPage("/dashboard");
+            })
+            .catch(err => this.setState({
+                isUserAuthenticated: false,
+                isLoading: false
+            }) );
+            
         }
     }
 
     render(){
-        const { isEmailValid, isPasswordValid} = this.state;
-
+        
+        const { isEmailValid, isPasswordValid, isUserAuthenticated, isLoading, email, password} = this.state;
+        console.log(isUserAuthenticated);
         return(
             <>
                 <LoginView
                     onChange={this.onChange}
                     onClick={this.onHandleLogin}
+                    isUserAuthenticated={isUserAuthenticated}
+                    isLoading={isLoading}
+                    email={email}
+                    password={password}
                     isEmailValid={isEmailValid}
                     isPasswordValid={isPasswordValid}
                 />

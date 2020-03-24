@@ -1,24 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
+// import emailjs from 'emailjs-com';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from '../../../components/button/button';
 import SeatIcon from '../../../assets/images/chair.svg';
 import SystemIcom from '../../../assets/images/system_icon.svg';
-import WaveIcon from '../../../assets/images/wave_square_icon.svg';
+// import WaveIcon from '../../../assets/images/wave_square_icon.svg';
 import mockData from './mockData';
+import { createFactory } from 'react';
 
 const SeatAlocationView = (props) => {
-    const { onSeatSelection, seatData, empData } = props;
-    let [roomLayout, setRoomLayout] = React.useState();
-    let [selectedSeat, setSelectedSeat] = React.useState('');
-    const [CTAbutton, setCTAbutton] = React.useState(false);
-    const [isSeatAlloted, setIsSeatAlloted] = React.useState(false);
-    const [successMessage, setSuccessMessage] = React.useState('');
-    React.useEffect(() => {
+    const { onSeatSelection, seatData, empData, isSeatDeallocated } = props;
+    let [roomLayout, setRoomLayout] = useState();
+    let [selectedSeat, setSelectedSeat] = useState('');
+    const [CTAbutton, setCTAbutton] = useState(false);
+    const [isSeatAlloted, setIsSeatAlloted] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    useEffect(() => {
         /*uncomment below line if working with api data*/
-        let data = seatData.length > 0 ? seatData : mockData; 
-        //let data = mockData;        
+        let data = seatData.length > 0 ? seatData : mockData;
+        // let data = mockData;        
         var rooms = data.reduce(function (r, a) {
             r[a.roomId] = r[a.roomId] || [];
             r[a.roomId].push(a);
@@ -27,37 +29,58 @@ const SeatAlocationView = (props) => {
         var roomsArray = [];
         for (var i in rooms) {
             roomsArray.push(rooms[i]);
-        }        
-        createRoomLayout(roomsArray);
-    }, [])    
+        }
+        if (isSeatDeallocated) {
 
-    const onSelection = (seatData) => {        
+            setRoomLayout(createdummyRoom())
+        } else {
+            createRoomLayout(roomsArray);
+        }
+
+    }, [])
+
+
+    const onSelection = (seatData) => {
         setSelectedSeat(seatData);
         onSeatSelection(seatData);
         setCTAbutton(seatData.isOccupied ? false : true);
     }
 
     const submitSeatSelection = (seat) => {
-        axios.post('http://10.10.33.71:8083/seatalloc/allocateseat', {
+        let success = <Fragment>
+            <Row className='seat__successDiv'>
+                <Row className='seat__success'>Seat allocated to {empData.employeeName} {empData.employeeId}.</Row>
+                <Row className='seat__success'>He will receive update on his mail shortly!.</Row>
+            </Row>
+        </Fragment>;
+        const faliure = <Fragment>
+            <Row className='seat__successDiv'>
+                <Row className='seat__success'>Something Went Wrong...</Row>
+                <Row className='seat__success'>Please Try Again!!</Row>
+            </Row>
+        </Fragment>;
+        axios.post('http://localhost:8083/seatalloc/allocateseat', {
             "city": empData.city,
             "country": "India",
             "empId": empData.employeeId,
             "empName": empData.employeeName,
             "seatId": parseInt(seat.seatId)
-          })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });      
-        setIsSeatAlloted(true);
-        let success = <React.Fragment>
-            <Row className='seat__successDiv'>
-                <Row className='seat__success'>Seat allocated to {empData.employeeName} {empData.employeeId}.</Row>
-            </Row>
-        </React.Fragment>;
-        setSuccessMessage(success);
+        })
+            .then(function (response) {
+                setIsSeatAlloted(true);
+                setSuccessMessage(success);
+                axios.post('http://localhost:8088/mailsender/mailsend', {
+                    "emailAddress": empData.email,
+                    "empName": empData.ownerName,
+                    "msg": "The seat has been allocated to you"
+                }).then(res => {
+                    console.log("")
+                }).catch(err => console.log(err))
+            })
+            .catch((error) => {
+                setSuccessMessage(faliure);
+            });
+
     }
 
     const createRoomLayout = (seatAllocationData) => {
@@ -69,16 +92,16 @@ const SeatAlocationView = (props) => {
             } else {
                 room1stHalf = item.slice(0, item.length);
                 room2ndHalf = null;
-            }            
-            return <React.Fragment>
-                <Row id={'Room-' + index} className={ item.length > 8 ? "seat__Row" : "seat__Row_small" }>
+            }
+            return <Fragment>
+                <Row id={'Room-' + index} key={index} className={item.length > 8 ? "seat__Row" : "seat__Row_small"}>
                     {
-                        <React.Fragment>
+                        <Fragment>
                             <Col xs={2}><img src={SystemIcom} className="seat__system" /></Col>
                             {
                                 room1stHalf.slice(0, room1stHalf.length / 2).map((item, index) => {
                                     return <Col xs={room1stHalf.length <= 10 ? 2 : 1}>
-                                        <img className={`seat__rotatechair ${item.isOccupied ? 'seat__seatOccupied' : ''}`}
+                                        <img className={`seat__rotatechair ${item.isOccupied ? 'seat__seatOccupied' : 'seats'}`}
                                             id={item.seatCd}
                                             src={SeatIcon}
                                             title={item.empName == '' ? '' : `Name: ${item.empName} Emp id: ${item.empId} Seat No: ${item.seatCd}`}
@@ -101,21 +124,20 @@ const SeatAlocationView = (props) => {
                                     </Col>
                                 })
                             }
-                        </React.Fragment>
-                    }
+                        </Fragment>
                     }
                 </Row>
                 <br />
-                {/*<Row className='seat__Project'>Dummy Project</Row>*/}
+                <Row className='seat__Project'>ATP Room</Row>
 
                 {room2ndHalf ? <Row id={'Room-' + index} className="seat__Row">
                     {
-                        <React.Fragment>
+                        <Fragment>
                             <Col xs={2}><img src={SystemIcom} className="seat__system" /></Col>
                             {
                                 room2ndHalf.slice(0, room2ndHalf.length / 2).map((item, index) => {
-                                    return <Col xs={room2ndHalf.length <= 10 ? 2 : 1}>
-                                        <img className={`seat__rotatechair ${item.isOccupied ? 'seat__seatOccupied' : ''}`}
+                                    return <Col key={index} xs={room2ndHalf.length <= 10 ? 2 : 1}>
+                                        <img className={`seat__rotatechair ${item.isOccupied ? 'seat__seatOccupied' : 'seats'}`}
                                             id={item.seatCd}
                                             src={SeatIcon}
                                             title={item.empName == '' ? '' : `Name: ${item.empName} Emp id: ${item.empId} Seat No: ${item.seatCd}`}
@@ -132,39 +154,47 @@ const SeatAlocationView = (props) => {
                                 room2ndHalf.slice((room2ndHalf.length / 2), room2ndHalf.length).map((item, index) => {
                                     return <Col xs={room2ndHalf.length <= 10 ? 2 : 1} title={item.empName == '' ? '' : `Name: ${item.empName} Emp id: ${item.empId} Seat No: ${item.seatCd}`}>
                                         <img src={SeatIcon}
-                                            className={`${item.isOccupied ? 'seat__seatOccupied' : ''}`}
+                                            className={`${item.isOccupied ? 'seat__seatOccupied' : 'seats'}`}
                                             id={item.seatCd}
                                             onClick={() => onSelection(item)} />
                                     </Col>
                                 })
                             }
-                        </React.Fragment>
-                    }
+                        </Fragment>
                     }
                 </Row>
                     : null
                 }
-            </React.Fragment>
+            </Fragment>
         });
         setRoomLayout(layout);
+    }
+
+    const createdummyRoom = () => {
+        return <Fragment>
+            <Row className='seat__successDiv'>
+                <Row className='seat__success'>Seat is De-allocated</Row>
+            </Row>
+        </Fragment>
     }
 
     return <Row className="seat">
         <Col>
             <Row>
                 <Col className="seat__title">
-                    Seat Allocation
+                    {isSeatDeallocated ? "Seat De-allocation" : "Seat Allocation"}
                 </Col>
             </Row>
             <div className="seat__seatrow">
                 {!isSeatAlloted ? roomLayout : successMessage}
             </div>
 
-            <Row align="right" className="seat__btnrow--btnallocation">
-                <Col xs={11} style={{height: "40px"}}>
+            {isSeatDeallocated ? <Row align="right" className="seat__btnrow--btnallocation"></Row> : <Row align="right" className="seat__btnrow--btnallocation">
+                <Col xs={11} style={{ height: "40px" }}>
                     {!isSeatAlloted ? <Button name="Done" className="seat__btn" disabled={!CTAbutton} onClick={() => submitSeatSelection(selectedSeat)} /> : null}
                 </Col>
-            </Row>
+            </Row>}
+
         </Col>
     </Row>
 }

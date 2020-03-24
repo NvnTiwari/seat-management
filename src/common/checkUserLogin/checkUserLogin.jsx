@@ -59,6 +59,7 @@ const checkUserLogin = (WrapperComponent) =>{
 
         onLogout = () => {
             window.localStorage.removeItem( '_TOKEN' );
+            window.localStorage.removeItem( 'email' );
             this.goToPage( '/' );
         }
 

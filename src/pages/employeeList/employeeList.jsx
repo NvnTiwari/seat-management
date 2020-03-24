@@ -105,7 +105,7 @@ export default function CustomPaginationActionsTable() {
     const [employeeData, setEmployeeData] = React.useState([]);  
     const [employees, setEmployees] = React.useState([])
     useEffect(() => {
-        axios(`http://10.10.33.71:8081/api/employees/all`, {
+        axios(`http://192.168.0.113:8083/api/employees/all`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -155,7 +155,7 @@ export default function CustomPaginationActionsTable() {
 
     return (
         <div>
-            <div class='employeeList'>Employee List</div>
+            <div className='employeeList'>Employee List</div>
             <input type="text" id="myInput" className='search' placeholder="Search employee....." onChange={search} />
             <div>
                 <TableContainer component={Paper}>
@@ -174,7 +174,7 @@ export default function CustomPaginationActionsTable() {
                                 : employees
                             ).map((row, index) => (
 
-                                <TableRow key={row.id} style={index % 2 ? { background: "#D3D3D3" } : { background: "white" }}>                                    
+                                <TableRow key={index} style={index % 2 ? { background: "#D3D3D3" } : { background: "white" }}>                                    
                                     <TableCell align="center">{row.name}</TableCell>
                                     <TableCell align="center">{row.email}</TableCell>
                                     <TableCell align="center">{row.clientLocation}</TableCell>
